@@ -13,10 +13,12 @@ MapWindow::MapWindow(const QString &filePath): ui(new Ui::MapWindow)
     ui->menuFile->addAction(ui->actionLogout);
     ui->menuAdmin->addAction(ui->actionAdd_newUser);
     ui->menuAdmin->addAction(ui->actionCreate_Facility);
+    ui->menuReport->addAction(ui->actionGenerate);
     connect(ui->actionLogout, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionAdd_newUser, SIGNAL(triggered()), this, SLOT(createUser_clicked()));
     connect(ui->actionCreate_Facility, SIGNAL(triggered()), this, SLOT(createFac_clicked()));
-    connect(ui->actionFacilityView,SIGNAL(triggered()), this, SLOT(facilityView()));
+    connect(ui->actionFacilityView, SIGNAL(triggered()), this, SLOT(facilityView()));
+    connect(ui->actionGenerate, SIGNAL(triggered()), this, SLOT(generateReport_clicked()));
 
     colorList = new QList<QColor>();
     facSizeList = new QList<int>();
@@ -33,16 +35,8 @@ void MapWindow::createFac_clicked(){
     MapWinCtrl::getInstance()->goToAddFac(aPnt, NULL, aColor);
 }
 
-
-
-
-
-void MapWindow::facilityView()
-{
-    MapWinCtrl::getInstance()->gotoFacility();
-}
-
-
+void MapWindow::generateReport_clicked(){MapWinCtrl::getInstance()->goToGenerate();}
+void MapWindow::facilityView(){MapWinCtrl::getInstance()->gotoFacility();}
 
 void MapWindow::reportSetup()
 {

@@ -12,6 +12,7 @@
 #include "adduserctrl.h"
 #include "adduserwindow.h"
 #include "addfacility.h"
+#include "genreportwin.h"
 
 /*
 
@@ -37,6 +38,7 @@ public:
     void setupPatients();
     void setupFacility();
     void gotoFacility();
+    void goToGenerate();
     void setupUser();
     int getId();
     static MapWinCtrl* getInstance();
@@ -58,6 +60,7 @@ private:
     AddFacility* addFac;
     FacilityWindow* aFacilityView;
     InvalidWindow* invalidWin;
+    GenReportWin* reportWin;
     int wlArray[5];
 
     //FAKE DATA TEST

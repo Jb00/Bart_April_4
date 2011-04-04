@@ -31,6 +31,7 @@ void Patient::setNeeded(int aType){reqCare = aType;}
 void Patient::setFacility(QString aFacility){facilityName =aFacility;}
 void Patient::setBed(int aBed){bedNumber =aBed;}
 void Patient::setdateWL(QDateTime aDate){dateWL =aDate;}
+void Patient::setOcc(int occType){occCare = occType;}
 
 int Patient::gethealthCard(){return healthCardNum;}
 QString Patient::getFName(){return fName;}

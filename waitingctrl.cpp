@@ -104,28 +104,28 @@ Patient* WaitingCtrl::searchForPatient(int health){
 
     for(int i = 0; i < MapWinCtrl::getInstance()->listOfFacility.size(); i++){
 
-        //qDebug() << "Size of complex: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientComplex();
-        //qDebug() << "Size of Acute: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientAcute();
-        //qDebug() << "Size of LTC: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientLTC();
+        qDebug() << "Size of complex: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientComplex();
+        qDebug() << "Size of Acute: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientAcute();
+        qDebug() << "Size of LTC: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientLTC();
 
-        if(!(MapWinCtrl::getInstance()->listOfFacility.at(i)->getListAcute()->isEmpty())){
+        if(!(MapWinCtrl::getInstance()->listOfFacility.at(i)->getListComplex()->isEmpty())){
 
             for(int j = 0; j < MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientComplex(); j++){
                 if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getListComplex()->at(j)->gethealthCard() == health){
 
                     aPatient = MapWinCtrl::getInstance()->listOfFacility.at(i)->getListComplex()->at(j);
-                   // qDebug() << "Health card number inside Waiting Ctrl: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getListComplex()->at(j)->gethealthCard();
+                    qDebug() << "Health card number inside Waiting Ctrl: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getListComplex()->at(j)->gethealthCard();
                     return aPatient;
                 }
             }
         }
-        if(!(MapWinCtrl::getInstance()->listOfFacility.at(i)->getListComplex()->isEmpty())){
+        if(!(MapWinCtrl::getInstance()->listOfFacility.at(i)->getListAcute()->isEmpty())){
 
             for(int k = 0; k < MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizePatientAcute(); k++){
                 if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getListAcute()->at(k)->gethealthCard() == health){
 
                     aPatient = MapWinCtrl::getInstance()->listOfFacility.at(i)->getListAcute()->at(k);
-                   // qDebug() << "Health card number inside Waiting Acute: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getListAcute()->at(k)->gethealthCard();
+                    qDebug() << "Health card number inside Waiting Acute: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getListAcute()->at(k)->gethealthCard();
                     return aPatient;
                 }
             }
@@ -136,7 +136,7 @@ Patient* WaitingCtrl::searchForPatient(int health){
                 if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getListLTC()->at(l)->gethealthCard() == health){
 
                     aPatient = MapWinCtrl::getInstance()->listOfFacility.at(i)->getListLTC()->at(l);
-                   // qDebug() << "Health card number inside Waiting LTC: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getListLTC()->at(l)->gethealthCard();
+                    qDebug() << "Health card number inside Waiting LTC: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getListLTC()->at(l)->gethealthCard();
                     return aPatient;
                 }
             }

@@ -36,11 +36,14 @@ void NewPatientCtrl::addPatient(QString card, QString fName, QString lName, QDat
     id.setNum(current->getId());
 
     if(reqCare == 0){
+        aPatient->setOcc(0);
         AssignHospitalController::getInstance()->addtoBed(aPatient,current,"Acute");
         AssignHospitalController::getInstance()->setXmlNewPatient(card, fName, lName, admitted.toString(), waiting.toString(), req,
                                                                   occ, id);
+
     }
     else if(reqCare == 1){
+        aPatient->setOcc(1);
         AssignHospitalController::getInstance()->addtoBed(aPatient, current, "Complex");
         AssignHospitalController::getInstance()->setXmlNewPatient(card, fName, lName, admitted.toString(), waiting.toString(), req,
                                                                   occ, id);

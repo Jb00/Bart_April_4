@@ -56,7 +56,7 @@ void WaitingListWindow::searchBtn_clicked(){
     card = ui->healthLine->text().toInt();
     aPatient = WaitingCtrl::getInstance()->searchForPatient(card);
 
-    //qDebug() << "The patient healthcard number is: " << aPatient->gethealthCard();
+    qDebug() << "The patient healthcard number is: " << aPatient->gethealthCard();
     if((!aPatient) || (ui->healthLine->text().isEmpty())){
         WaitingCtrl::getInstance()->invalid("Please enter a valid HC number.");
         ui->healthLine->clear();

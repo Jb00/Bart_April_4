@@ -39,6 +39,7 @@ public:
     void setFacility(QString);
     void setBed(int);
     void setdateWL(QDateTime);
+    void setOcc(int);
     int gethealthCard();
     QString getFName();
     QString getLName();

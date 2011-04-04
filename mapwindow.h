@@ -57,6 +57,7 @@ private slots:
     //void logout_clicked();
     void facilityView();
     void reportSetup();
+    void generateReport_clicked();
 };
 
 #endif // MAPWINDOW_H
