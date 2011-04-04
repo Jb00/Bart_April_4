@@ -11,6 +11,7 @@
 #include "AssignHospitalController.h"
 #include "AssignLTCController.h"
 #include "addfacctrl.h"
+//#include "mapwinctrl.h"
 
 namespace Ui {
     class FacilityWindow;
@@ -44,6 +45,7 @@ private slots:
     void waitingBtn_clicked();
     void addBedBtn_clicked();
     void addPatientBtn_clicked();
+    void cancelBtn_clicked();
 
 };
 

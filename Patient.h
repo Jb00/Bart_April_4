@@ -45,6 +45,8 @@ public:
     QDateTime getAdmission();
     QDateTime getDateWL();
     int getNeeded(); //Needed Care
+    int getOcc();
+    QString getFacility();
 
 };
 #endif // PATIENT_H

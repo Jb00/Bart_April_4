@@ -6,14 +6,15 @@
 #include <QDebug>
 
 #include "waitingctrl.h"
-//#include "Patient.h"
+#include "genui.h"
+//#include "facilitywinctrl.h"
 
 
 namespace Ui {
     class WaitingListWindow;
 }
 
-class WaitingListWindow : public QMainWindow
+class WaitingListWindow : public QMainWindow, public genUI
 {
     Q_OBJECT
 
@@ -22,6 +23,8 @@ public:
     ~WaitingListWindow();
 
     void keyPressEvent(QKeyEvent * event);
+
+    void setScheme();
 
 private:
     Ui::WaitingListWindow *ui;

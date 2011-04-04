@@ -7,13 +7,18 @@ FacilityWindow::FacilityWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setPalette(Qt::white);
+
     connect(ui->patientAddBtn, SIGNAL(pressed()), this, SLOT(addPatientBtn_clicked()));
     connect(ui->bedAddBtn, SIGNAL(pressed()), this, SLOT(addBedBtn_clicked()));
     connect(ui->waitingBtn, SIGNAL(pressed()), this, SLOT(waitingBtn_clicked()));
+    connect(ui->cancelBtn, SIGNAL(pressed()), this, SLOT(cancelBtn_clicked()));
 
     connect(ui->acuteRaio, SIGNAL(toggled(bool)), this, SLOT(AcuteSelected()));
     connect(ui->complexRadio, SIGNAL(toggled(bool)), this, SLOT(ComplexSelected()));
     connect(ui->longRadio, SIGNAL(toggled(bool)), this, SLOT(LTCSelected()));
+
+    setScheme();
 }
 
 void FacilityWindow::setUI(Facility* aFacility)
@@ -112,47 +117,51 @@ void FacilityWindow::LTCSelected()
 
 void FacilityWindow::addBedBtn_clicked()
 {
-       if(ui->acuteRaio->isChecked())
-       {
-           AddBedController::getInstance()->addtoBed(ui->addBedNum->text(),"Acute",facility);
+       if(ui->acuteRaio->isChecked()){
+           AddBedController::getInstance()->addtoBed(ui->addBedLine->text(),"Acute",facility);
            AcuteSelected(); //To refresh the UI
        }
-           else
-               if (ui->complexRadio->isChecked())
-               {
-                  AddBedController::getInstance()->addtoBed(ui->addBedNum->text(),"Complex",facility);
-                   ComplexSelected();//To refresh the UI
-               }
-                   if (ui->longRadio->isChecked())
-                   {
-                         AddBedController::getInstance()->addtoBed(ui->addBedNum->text(),"LTC",facility);
-                         LTCSelected(); //To refresh the UI
-                   }
-                   this->close();
+       else if (ui->complexRadio->isChecked()){
+           AddBedController::getInstance()->addtoBed(ui->addBedLine->text(),"Complex",facility);
+           ComplexSelected();//To refresh the UI
+       }
+       else if (ui->longRadio->isChecked()){
+           AddBedController::getInstance()->addtoBed(ui->addBedLine->text(),"LTC",facility);
+           LTCSelected(); //To refresh the UI
+       }
+
+       this->close();
 }
 
 void FacilityWindow::addPatientBtn_clicked()
 {
-//ADD PATIENT TO A BED TO A FACILITY
+    FacilityWinCtrl::getInstance()->goToNewPatient(facility);
+    update();
+    /*//ADD PATIENT TO A BED TO A FACILITY
     QDateTime aDate = QDateTime::fromString("2003-05-30T09:00:00","yyyy-MM-dThh:mm:ss");
 
-    aPatient2 = new Patient ("12e","Bob","Henry",aDate,aDate,7,8);
+    //aPatient2 = new Patient ("12e","Bob","Henry",aDate,aDate,7,8);
 
 
-    if(ui->acuteRaio->isChecked())
-    {
+    if(ui->acuteRaio->isChecked()){
         AssignHospitalController::getInstance()->addtoBed(aPatient2,facility,"Acute");
         AcuteSelected(); //To refresh the UI
     }
-        else
-            if (ui->complexRadio->isChecked())
-            {
-               AssignHospitalController::getInstance()->addtoBed(aPatient2,facility,"Complex");
-                ComplexSelected();//To refresh the UI
-            }
+    else if (ui->complexRadio->isChecked()){
+        AssignHospitalController::getInstance()->addtoBed(aPatient2,facility,"Complex");
+        ComplexSelected();//To refresh the UI
+    }*/
 }
 
+void FacilityWindow::cancelBtn_clicked(){this->close();}
+
 void FacilityWindow::waitingBtn_clicked(){
+
+
+    if(facility->getSizeAcute() > 0 || facility->getSizeComplex() > 0)
+        FacilityWinCtrl::getInstance()->setType("hospital");
+    else
+        FacilityWinCtrl::getInstance()->setType("nursing");
 
     FacilityWinCtrl::getInstance()->goToWaiting();
 
@@ -172,13 +181,15 @@ void FacilityWindow::setScheme(){
     QPalette btnPal(Qt::white);
     btnPal.setColor(QPalette::ButtonText, QColor(255, 255, 255));
 
-    ui->addBedNum->setStyleSheet("background-color: red");
-    ui->addPatNum->setStyleSheet("background-color: red");
     ui->waitingBtn->setStyleSheet("background-color: red");
+    ui->patientAddBtn->setStyleSheet("background-color: red");
+    ui->cancelBtn->setStyleSheet("background-color: red");
+    ui->bedAddBtn->setStyleSheet("background-color: red");
 
-    ui->addBedNum->setPalette(btnPal);
-    ui->addPatNum->setPalette(btnPal);
-    ui->waitingBtn->setStyleSheet("background-color: red");
+    ui->waitingBtn->setPalette(btnPal);
+    ui->patientAddBtn->setPalette(btnPal);
+    ui->cancelBtn->setPalette(btnPal);
+    ui->bedAddBtn->setPalette(btnPal);
 
 }
 

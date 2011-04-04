@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'facilitywindow.h'
 **
-** Created: Sun Apr 3 00:20:49 2011
+** Created: Sun Apr 3 20:11:54 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_FacilityWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,6 +37,7 @@ static const uint qt_meta_data_FacilityWindow[] = {
       64,   15,   15,   15, 0x08,
       85,   15,   15,   15, 0x08,
      105,   15,   15,   15, 0x08,
+     129,   15,   15,   15, 0x08,
 
        0        // eod
 };
@@ -45,7 +46,7 @@ static const char qt_meta_stringdata_FacilityWindow[] = {
     "FacilityWindow\0\0AcuteSelected()\0"
     "ComplexSelected()\0LTCSelected()\0"
     "waitingBtn_clicked()\0addBedBtn_clicked()\0"
-    "addPatientBtn_clicked()\0"
+    "addPatientBtn_clicked()\0cancelBtn_clicked()\0"
 };
 
 const QMetaObject FacilityWindow::staticMetaObject = {
@@ -85,9 +86,10 @@ int FacilityWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: waitingBtn_clicked(); break;
         case 4: addBedBtn_clicked(); break;
         case 5: addPatientBtn_clicked(); break;
+        case 6: cancelBtn_clicked(); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>410</width>
-    <height>610</height>
+    <height>541</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>520</y>
+      <y>500</y>
       <width>411</width>
       <height>31</height>
      </rect>
@@ -76,7 +76,7 @@
       <x>10</x>
       <y>190</y>
       <width>391</width>
-      <height>161</height>
+      <height>131</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -98,13 +98,13 @@
       <string>Number of Beds</string>
      </property>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>20</y>
-       <width>381</width>
-       <height>141</height>
+       <x>10</x>
+       <y>30</y>
+       <width>371</width>
+       <height>95</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
@@ -116,7 +116,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QSpinBox" name="acuteNumBox"/>
+       <widget class="QLineEdit" name="acuteLine"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_13">
@@ -126,7 +126,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="complexNumBox"/>
+       <widget class="QLineEdit" name="complexLine"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_14">
@@ -136,13 +136,10 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="longNumBox"/>
+       <widget class="QLineEdit" name="longLine"/>
       </item>
      </layout>
     </widget>
-    <zorder>label_8</zorder>
-    <zorder></zorder>
-    <zorder>layoutWidget</zorder>
    </widget>
    <widget class="QFrame" name="frame">
     <property name="geometry">
@@ -237,9 +234,8 @@
       </item>
      </layout>
     </widget>
-    <zorder>label_4</zorder>
     <zorder>layoutWidget</zorder>
-    <zorder></zorder>
+    <zorder>label_4</zorder>
    </widget>
    <widget class="QLabel" name="crossImg">
     <property name="geometry">
@@ -254,69 +250,73 @@
      <string/>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QFrame" name="frame_3">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>360</y>
-      <width>93</width>
-      <height>141</height>
+      <y>330</y>
+      <width>391</width>
+      <height>161</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Facility Name</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Facility ID</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>X Coordinate</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Y Coordinate</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>360</y>
-      <width>271</width>
-      <height>151</height>
-     </rect>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
     </property>
-    <layout class="QGridLayout" name="gridLayout_7">
-     <item row="0" column="0">
-      <widget class="QLineEdit" name="nameLine"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="idLine"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLineEdit" name="xLine"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLineEdit" name="yLine"/>
-     </item>
-    </layout>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>371</width>
+       <height>141</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Facility Name</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="nameLine"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Facility ID</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="idLine"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>X Coordinate</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="xLine"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Y Coordinate</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="yLine"/>
+      </item>
+     </layout>
+    </widget>
    </widget>
   </widget>
  </widget>

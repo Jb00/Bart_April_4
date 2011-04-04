@@ -39,7 +39,9 @@ SOURCES += main.cpp\
     xmlreader.cpp \
     facilitywinctrl.cpp \
     waitingctrl.cpp \
-    waitinglistwindow.cpp
+    waitinglistwindow.cpp \
+    newpatientwindow.cpp \
+    newpatientctrl.cpp
 
 HEADERS  += loginwindow.h \
     User.h \
@@ -66,13 +68,15 @@ HEADERS  += loginwindow.h \
     xmlreader.h \
     facilitywinctrl.h \
     waitingctrl.h \
-    waitinglistwindow.h
+    waitinglistwindow.h \
+    newpatientwindow.h \
+    newpatientctrl.h
 
 FORMS    += loginwindow.ui \
     mapwindow.ui \
     invalidwindow.ui \
     adduserwindow.ui \
     addfacility.ui \
-    CreateNewFacility.ui \
     facilitywindow.ui \
-    waitinglistwindow.ui
+    waitinglistwindow.ui \
+    newpatientwindow.ui

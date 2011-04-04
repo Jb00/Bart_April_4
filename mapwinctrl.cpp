@@ -85,7 +85,7 @@ void MapWinCtrl::gotoFacility()
     aFacilityView = new FacilityWindow();
     aFacilityView->show();
     aFacilityView->setUI(listOfFacility.at(0));
-   genCTRL::center(*aFacilityView);
+    genCTRL::center(*aFacilityView);
 }
 
 
@@ -114,32 +114,27 @@ void MapWinCtrl::setupPatients()
          reqCare = query.value(6).toInt();
 
          Patient * aPatient = new Patient(HealthCardNum, firstName,lastName,dateAdmitted,datePlacedOnWaitingList,reqCare,occCare);
-         if(occCare == 0)
-                  {
-                      if (listOfFacility.at(0)->NUsedBedAcute())
-                      {
-                          listOfFacility.at(0)->addPatientAcute(aPatient);
-                      }
-                  }
+         if(occCare == 0){
+             for(int i = 0; i < listOfFacility.size(); i++)
+                 if (listOfFacility.at(i)->NUsedBedAcute())
+                     listOfFacility.at(i)->addPatientAcute(aPatient);
 
-                  if (occCare == 1)
-                  {
-                      if (listOfFacility.at(0)->NUsedBedComplex())
-                      {
-                          listOfFacility.at(0)->addPatientComplex(aPatient);
-                      }
-                  }
+         }
 
-                  if (occCare == 2)
-                  {
-                          if (listOfFacility.at(0)->NUsedBedLTC())
-                          {
-                              listOfFacility.at(0)->addPatientLTC(aPatient);
-                          }
-                  }
+         if (occCare == 1){
+             for(int i = 0; i < listOfFacility.size(); i++)
+                if (listOfFacility.at(i)->NUsedBedComplex())
+                    listOfFacility.at(i)->addPatientComplex(aPatient);
+         }
 
-  //       listOfPatient.append(aPatient);
-     }
+         if (occCare == 2){
+             for(int i = 0; i < listOfFacility.size(); i++)
+                if (listOfFacility.at(i)->NUsedBedLTC())
+                    listOfFacility.at(i)->addPatientLTC(aPatient);
+         }
+
+    }
+
      query.clear();
 }
 
@@ -239,18 +234,7 @@ Facility*  MapWinCtrl::getFacilityFromid(QString anId)
 }
 
 //Return our ID of the facility
-int MapWinCtrl::getId()
-{
-    return listOfFacility.at(0)->getId();
-}
-
-void MapWinCtrl::setWlArray(QString position, QString id)
-{
-    wlArray[position.toInt()] = id.toInt();
-}
-
-int MapWinCtrl::getWlArray(int position)
-{
-    return wlArray[position];
-}
+int MapWinCtrl::getId(){return listOfFacility.at(0)->getId();}
+void MapWinCtrl::setWlArray(QString position, QString id){wlArray[position.toInt()] = id.toInt();}
+int MapWinCtrl::getWlArray(int position){return wlArray[position];}
 

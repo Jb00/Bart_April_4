@@ -54,6 +54,8 @@ void AssignHospitalController::addtoBed(Patient * aPatient, Facility * aFacility
 //We can use this always ? probably ? Will have to wait for BART UI
 void AssignHospitalController::setXmlNewPatient(QString aHealthCardNum,QString aFName,QString aLName,QString aDateAdmitted,QString aDateWL,QString aReqCare,QString anOccCare,QString aFacilityId)
 {
+    qDebug() << "Inside the setXmlNewPatient() method.";
+
     QDateTime aDate = QDateTime::fromString("2003-05-30T09:00:00","yyyy-MM-dThh:mm:ss");
 
     int x;

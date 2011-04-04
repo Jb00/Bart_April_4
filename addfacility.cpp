@@ -14,9 +14,9 @@ AddFacility::AddFacility(QWidget *parent) :
     connect(ui->hospitalRadio, SIGNAL(toggled(bool)), this, SLOT(typeRadio_selected()));
     connect(ui->nursingRadio, SIGNAL(toggled(bool)), this, SLOT(typeRadio_selected()));
 
-    ui->acuteNumBox->setDisabled(true);
-    ui->complexNumBox->setDisabled(true);
-    ui->longNumBox->setDisabled(true);
+    ui->acuteLine->setDisabled(true);
+    ui->complexLine->setDisabled(true);
+    ui->longLine->setDisabled(true);
 
     colorList = new QList<QColor>();
 
@@ -44,9 +44,9 @@ void AddFacility::okBtn_clicked(){
     id = ui->idLine->text().toInt();
     xCoord = ui->xLine->text().toInt();
     yCoord = ui->yLine->text().toInt();
-    AC = ui->acuteNumBox->text().toInt();
-    CCC=ui->complexNumBox->text().toInt();
-    LTC=ui->longNumBox->text().toInt();
+    AC = ui->acuteLine->text().toInt();
+    CCC=ui->complexLine->text().toInt();
+    LTC=ui->longLine->text().toInt();
     qDebug() <<CCC;
 
 
@@ -88,18 +88,18 @@ void AddFacility::typeRadio_selected(){
 
     if(ui->hospitalRadio->isChecked()){
 
-        ui->acuteNumBox->setEnabled(true);
-        ui->complexNumBox->setEnabled(true);
-        ui->longNumBox->setDisabled(true);
-        ui->longNumBox->setValue(0);
+        ui->acuteLine->setEnabled(true);
+        ui->complexLine->setEnabled(true);
+        ui->longLine->setDisabled(true);
+        ui->longLine->setText("0");
     }
     else{
 
-        ui->longNumBox->setEnabled(true);
-        ui->acuteNumBox->setDisabled(true);
-        ui->acuteNumBox->setValue(0);
-        ui->complexNumBox->setDisabled(true);
-        ui->complexNumBox->setValue(0);
+        ui->longLine->setEnabled(true);
+        ui->acuteLine->setDisabled(true);
+        ui->acuteLine->setText("0");
+        ui->complexLine->setDisabled(true);
+        ui->complexLine->setText("0");
     }
 
 }

@@ -3,13 +3,13 @@
 
 Patient::Patient(){
 
-    healthCardNum = 0;
+    healthCardNum = -1;
     fName = "";
     lName = "";
     //dateAdmitted = NULL;
     //dateWL = NULL;
-    reqCare = 0;
-    occCare = 0;
+    reqCare = -1;
+    occCare = -1;
 }
 
 Patient::~Patient(){}
@@ -35,9 +35,11 @@ void Patient::setdateWL(QDateTime aDate){dateWL =aDate;}
 int Patient::gethealthCard(){return healthCardNum;}
 QString Patient::getFName(){return fName;}
 QString Patient::getLName(){return lName;}
+QString Patient::getFacility(){return facilityName;}
 QDateTime Patient::getDateWL(){return dateWL;}
 QDateTime Patient::getAdmission(){return dateAdmitted;}
 int Patient::getNeeded(){return reqCare;}
+int Patient::getOcc(){return occCare;}
 
 /*QString Patient::getFacility()
 {
