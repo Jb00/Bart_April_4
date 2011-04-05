@@ -54,6 +54,56 @@ MapWinCtrl* MapWinCtrl::getInstance()
     return anInstance;//Return the instance.
 }
 
+QList<Facility*> MapWinCtrl::getHospitals(){
+    for(int i = 0; i < listOfFacility.size(); i++){
+
+        if(listOfFacility.at(i)->getType() == "H")
+            listOfHospital.append(listOfFacility.at(i));
+    }
+
+    return listOfHospital;
+}
+
+QList<Facility*> MapWinCtrl::getNursing(){
+    for(int i = 0; i < listOfFacility.size(); i++){
+
+        if(listOfFacility.at(i)->getType() == "N")
+            listOfNursing.append(listOfFacility.at(i));
+    }
+
+    return listOfNursing;
+}
+
+QList<Facility*> MapWinCtrl::getACAvailable(){
+    for(int i = 0; i < listOfFacility.size(); i++){
+
+        if(listOfFacility.at(i)->getSizeAvailableAcute() > 0)
+            availableACBeds.append(listOfFacility.at(i));
+    }
+
+    return availableACBeds;
+}
+
+QList<Facility*> MapWinCtrl::getCCCAvailable(){
+    for(int i = 0; i < listOfFacility.size(); i++){
+
+        if(listOfFacility.at(i)->getSizeAvailableComplex() > 0)
+            availableCCCBeds.append(listOfFacility.at(i));
+    }
+
+    return availableCCCBeds;
+}
+
+QList<Facility*> MapWinCtrl::getLTCAvailable(){
+    for(int i = 0; i < listOfFacility.size(); i++){
+
+        if(listOfFacility.at(i)->getSizeAvailableLTC() > 0)
+            availableLTCBeds.append(listOfFacility.at(i));
+    }
+
+    return availableLTCBeds;
+}
+
 void MapWinCtrl::goToAddUser()
 {
 

@@ -26,6 +26,7 @@ QList<Patient*>* Facility::getListAcute(){return &listAcute;}
 QList<Patient*>* Facility::getListComplex(){return &listComplex;}
 QList<Patient*>* Facility::getListLTC(){return &listLTC;}
 
+QString Facility::getType(){return type;}
 //Add a bed Acute
 void Facility::addBedAcute()
 {

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mapwindow.ui'
 **
-** Created: Mon Apr 4 23:16:46 2011
+** Created: Tue Apr 5 10:42:43 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -44,6 +44,7 @@ public:
     QAction *actionDelete_Facility;
     QAction *actionFacilityView;
     QAction *actionGenerate;
+    QAction *actionView_All;
     QWidget *centralWidget;
     QLabel *mapImg;
     QMenuBar *menuBar;
@@ -97,6 +98,8 @@ public:
         actionFacilityView->setObjectName(QString::fromUtf8("actionFacilityView"));
         actionGenerate = new QAction(MapWindow);
         actionGenerate->setObjectName(QString::fromUtf8("actionGenerate"));
+        actionView_All = new QAction(MapWindow);
+        actionView_All->setObjectName(QString::fromUtf8("actionView_All"));
         centralWidget = new QWidget(MapWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         mapImg = new QLabel(centralWidget);
@@ -142,6 +145,8 @@ public:
         menuFacility->addAction(actionHospital);
         menuFacility->addSeparator();
         menuFacility->addAction(actionNursing_Home);
+        menuFacility->addSeparator();
+        menuFacility->addAction(actionView_All);
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionFacilityView);
         menuAdmin->addAction(actionAdd_newUser);
@@ -173,6 +178,7 @@ public:
         actionDelete_Facility->setText(QApplication::translate("MapWindow", "Delete Facility", 0, QApplication::UnicodeUTF8));
         actionFacilityView->setText(QApplication::translate("MapWindow", "FacilityView", 0, QApplication::UnicodeUTF8));
         actionGenerate->setText(QApplication::translate("MapWindow", "Generate", 0, QApplication::UnicodeUTF8));
+        actionView_All->setText(QApplication::translate("MapWindow", "View All", 0, QApplication::UnicodeUTF8));
         mapImg->setText(QString());
         menuFile->setTitle(QApplication::translate("MapWindow", "File", 0, QApplication::UnicodeUTF8));
         menuSearch->setTitle(QApplication::translate("MapWindow", "Search", 0, QApplication::UnicodeUTF8));

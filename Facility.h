@@ -87,7 +87,7 @@ public:
     int getY();
 
 
-
+    QString getType();
     void setName(QString);
 
 

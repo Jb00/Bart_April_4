@@ -47,10 +47,17 @@ public:
     void setWlArray(QString,QString);
     int getWlArray(int);
 
+    QList<Facility*> getHospitals();
+    QList<Facility*> getNursing();
+    QList<Facility*> getACAvailable();
+    QList<Facility*> getCCCAvailable();
+    QList<Facility*> getLTCAvailable();
+
 
     void invalid();
     QList<Facility*> listOfFacility;
     QList<Patient*> listOfPatient;
+
 
 
 private:
@@ -63,6 +70,12 @@ private:
     InvalidWindow* invalidWin;
     GenReportWin* reportWin;
     int wlArray[5];
+
+    QList<Facility*> listOfHospital;
+    QList<Facility*> listOfNursing;
+    QList<Facility*> availableACBeds;
+    QList<Facility*> availableLTCBeds;
+    QList<Facility*> availableCCCBeds;
 
     //FAKE DATA TEST
 
@@ -80,7 +93,7 @@ private:
     Patient * aPatient15;
     Patient * aPatient16;
     Patient * aPatient17;
-    QList<Patient*> aPatientList;
+    //QList<Patient*> aPatientList;
 
     Facility * aFacility2;
     Facility * aFacility3;

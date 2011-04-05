@@ -16,14 +16,27 @@ MapWindow::MapWindow(const QString &filePath, QString perm): ui(new Ui::MapWindo
     ui->menuAdmin->addAction(ui->actionAdd_newUser);
     ui->menuAdmin->addAction(ui->actionCreate_Facility);
     ui->menuReport->addAction(ui->actionGenerate);
+    ui->menuFacility->addAction(ui->actionHospital);
+    ui->menuFacility->addAction(ui->actionNursing_Home);
+    ui->menuFacility->addAction(ui->actionView_All);
+    ui->menuAvailable_Beds->addAction(ui->actionAcute_Care);
+    ui->menuAvailable_Beds->addAction(ui->actionComplex_Continuing_Care);
+    ui->menuAvailable_Beds->addAction(ui->actionLong_Term_Care);
+
     connect(ui->actionLogout, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionAdd_newUser, SIGNAL(triggered()), this, SLOT(createUser_clicked()));
     connect(ui->actionCreate_Facility, SIGNAL(triggered()), this, SLOT(createFac_clicked()));
     connect(ui->actionFacilityView, SIGNAL(triggered()), this, SLOT(facilityView()));
     connect(ui->actionGenerate, SIGNAL(triggered()), this, SLOT(generateReport_clicked()));
+    connect(ui->actionHospital, SIGNAL(triggered()), this, SLOT(viewHospitals_clicked()));
+    connect(ui->actionNursing_Home, SIGNAL(triggered()), this, SLOT(viewNursing_clicked()));
+    connect(ui->actionView_All, SIGNAL(triggered()), this, SLOT(viewAll_clicked()));
+    connect(ui->actionAcute_Care, SIGNAL(triggered()), this, SLOT(acBeds_clicked()));
+    connect(ui->actionComplex_Continuing_Care, SIGNAL(triggered()), this, SLOT(cccBeds_clicked()));
+    connect(ui->actionLong_Term_Care, SIGNAL(triggered()), this, SLOT(ltcBeds_clicked()));
 
     colorList = new QList<QColor>();
-    facSizeList = new QList<int>();
+    //facSizeList = new QList<int>();
 
 
     permissions = perm;
@@ -51,18 +64,6 @@ void MapWindow::createFac_clicked(){
 void MapWindow::generateReport_clicked(){MapWinCtrl::getInstance()->goToGenerate();}
 void MapWindow::facilityView(){MapWinCtrl::getInstance()->gotoFacility();}
 
-void MapWindow::reportSetup()
-{
-    QList<QString> listResponse;
-    QList<QString> listFacilityDemanded;
-    listFacilityDemanded <<"test" << "Test2";
-    QString type ="AC";
-    QDate aDateB(1990,5,12);
-    QDate aDateA(1994,5,12);
-    listResponse = MessageController::getInstance()->setGetData(listFacilityDemanded,type,aDateB,aDateA);
-    qDebug() << listResponse.size();
-}
-
 void MapWindow::paintEvent(QPaintEvent *event)
  {
      Q_UNUSED(event)
@@ -72,20 +73,66 @@ void MapWindow::paintEvent(QPaintEvent *event)
      int innerSize = 0;
      int outerSize = 0;
 
-     if(!(MapWinCtrl::getInstance()->listOfFacility.isEmpty())){
+     QList<Facility*> paintList ;
 
-         for(int i = 0; i < MapWinCtrl::getInstance()->listOfFacility.size(); i++){
+     switch(type){
+
+     case 0:
+         paintList = hospitalList;
+         //update();
+         break;
+
+     case 1:
+         paintList = nursingList;
+         //update();
+         break;
+
+     case 2:
+         paintList = availableAC;
+         break;
+
+     case 3:
+         paintList = availableCCC;
+         break;
+
+     case 4:
+         paintList = availableLTC;
+         break;
+
+     default:
+         paintList = MapWinCtrl::getInstance()->listOfFacility;
+         //update();
+
+     }
+
+     if(!(paintList.isEmpty())){
+
+         for(int i = 0; i < paintList.size(); i++){
 
              QPoint aPnt;
-             aPnt.setX(MapWinCtrl::getInstance()->listOfFacility.at(i)->getX());
-             aPnt.setY(MapWinCtrl::getInstance()->listOfFacility.at(i)->getY());
+             aPnt.setX(paintList.at(i)->getX());
+             aPnt.setY(paintList.at(i)->getY());
 
 
-             if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= 0
-                && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
+             if(paintList.at(i)->getTotalLTC() <= 0
+                && paintList.at(i)->getTotalAC() > paintList.at(i)->getTotalCCC()){
 
-                 outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()) * 5);
-                 innerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()) * 5)/2;
+                 //qDebug() << "Outer Size in paint before assigning to outerSize= " << ((paintList.at(i)->getTotalAC()/paintList.at(i)->getTotalCCC()) * 5);
+
+                 if(paintList.at(i)->getTotalCCC() <= 0){
+                     outerSize = ((paintList.at(i)->getTotalAC()) * 5);
+                     innerSize = outerSize/2;
+
+                 }
+                 else{
+
+                     outerSize = ((paintList.at(i)->getTotalAC()/paintList.at(i)->getTotalCCC()) * 5);
+                     innerSize = ((paintList.at(i)->getTotalAC()/paintList.at(i)->getTotalCCC()) * 5)/2;
+
+                 }
+
+                 //qDebug() << "Outer Size in paint after assigning to outerSize = " << outerSize;
+
 
                  if(outerSize > 10){
                      outerSize = 10;
@@ -95,19 +142,15 @@ void MapWindow::paintEvent(QPaintEvent *event)
                      outerSize = 4;
                      innerSize = 2;
                  }
+
                 QColor temp;
                 QColor temp2;
 
                 int outer = 0;
                 int inner = 0;
 
-                outer = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAcute() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute()) * 0.1;
-                inner = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeComplex() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex()) * 0.1;
-
-               // qDebug() << "getSizeAvailableAcute() = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute();
-                //qDebug() << "J.B. Number occupied AC: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAcute();
-                //qDebug() << "getSizeAvailableComplex() = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex();
-                //qDebug() << "J.B. Number occupied CCC" << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeComplex();
+                outer = (paintList.at(i)->getSizeAcute() - paintList.at(i)->getSizeAvailableAcute()) * 0.1;
+                inner = (paintList.at(i)->getSizeComplex() - paintList.at(i)->getSizeAvailableComplex()) * 0.1;
 
                 temp.setRgb(outer, 255 - outer, 0, 255);
                 temp2.setRgb(inner, 255 - inner, 0, 255);
@@ -122,11 +165,18 @@ void MapWindow::paintEvent(QPaintEvent *event)
                  painter.setPen(temp2);
                  painter.drawEllipse(aPnt, innerSize, innerSize);
              }
-             else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= 0
-                && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() < MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
+             else if(paintList.at(i)->getTotalLTC() <= 0
+                && paintList.at(i)->getTotalAC() < paintList.at(i)->getTotalCCC()){
 
-                 innerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()) * 5)/2;
-                 outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()) * 5);
+                 if(paintList.at(i)->getTotalAC() <= 0){
+                     outerSize = ((paintList.at(i)->getTotalCCC()) * 5);
+                     innerSize = outerSize/2;
+
+                 }
+                 else{
+                     innerSize = ((paintList.at(i)->getTotalCCC()/paintList.at(i)->getTotalAC()) * 5)/2;
+                     outerSize = ((paintList.at(i)->getTotalCCC()/paintList.at(i)->getTotalAC()) * 5);
+                 }
 
                  if(outerSize > 10){
                      outerSize = 10;
@@ -144,8 +194,8 @@ void MapWindow::paintEvent(QPaintEvent *event)
                  int outer = 0;
                  int inner = 0;
 
-                 inner = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAcute() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute()) * 0.1;
-                 outer = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeComplex() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex()) * 0.1;
+                 inner = (paintList.at(i)->getSizeAcute() - paintList.at(i)->getSizeAvailableAcute()) * 0.1;
+                 outer = (paintList.at(i)->getSizeComplex() - paintList.at(i)->getSizeAvailableComplex()) * 0.1;
 
                  temp.setRgb(outer, 255 - outer, 0, 255);
                  temp2.setRgb(inner, 255 - inner, 0, 255);
@@ -158,31 +208,31 @@ void MapWindow::paintEvent(QPaintEvent *event)
                   painter.setPen(temp2);
                   painter.drawEllipse(aPnt, innerSize, innerSize);
              }
-             else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > 0
-                     && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4){
+             else if(paintList.at(i)->getTotalLTC() > 0
+                     && paintList.at(i)->getTotalLTC() <= (paintList.at(i)->getTotalLTC())/4){
 
                  painter.setBrush(Qt::black);
                  painter.setPen(Qt::black);
                  painter.drawEllipse(aPnt, 4, 4);
 
              }
-             else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4
-                     && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2){
+             else if(paintList.at(i)->getTotalLTC() > (paintList.at(i)->getTotalLTC())/4
+                     && paintList.at(i)->getTotalLTC() <= (paintList.at(i)->getTotalLTC())/2){
 
                  painter.setBrush(Qt::black);
                  painter.setPen(Qt::black);
                  painter.drawEllipse(aPnt, 6, 6);
 
              }
-             else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2
-                     && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC()) * 3)/4){
+             else if(paintList.at(i)->getTotalLTC() > (paintList.at(i)->getTotalLTC())/2
+                     && paintList.at(i)->getTotalLTC() <= ((paintList.at(i)->getTotalLTC()) * 3)/4){
 
                  painter.setBrush(Qt::black);
                  painter.setPen(Qt::black);
                  painter.drawEllipse(aPnt, 8, 8);
 
              }
-             else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC()) * 3)/4){
+             else if(paintList.at(i)->getTotalLTC() > ((paintList.at(i)->getTotalLTC()) * 3)/4){
 
 
                  painter.setBrush(Qt::black);
@@ -190,10 +240,10 @@ void MapWindow::paintEvent(QPaintEvent *event)
                  painter.drawEllipse(aPnt, 10, 10);
 
              }
-             else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute() == MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex()){
+             else if(paintList.at(i)->getSizeAvailableAcute() == paintList.at(i)->getSizeAvailableComplex()){
 
-                 if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > 0
-                         && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC())/4){
+                 if(paintList.at(i)->getTotalAC() > 0
+                         && paintList.at(i)->getTotalAC() <= (paintList.at(i)->getTotalAC())/4){
 
                      painter.setPen(Qt::DashLine);
                      painter.setBrush(Qt::blue);
@@ -201,8 +251,8 @@ void MapWindow::paintEvent(QPaintEvent *event)
                      painter.drawEllipse(aPnt, 4, 4);
 
                  }
-                 else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC())/4
-                         && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC())/2){
+                 else if(paintList.at(i)->getTotalAC() > (paintList.at(i)->getTotalAC())/4
+                         && paintList.at(i)->getTotalAC() <= (paintList.at(i)->getTotalAC())/2){
 
                      painter.setPen(Qt::DashLine);
                      painter.setBrush(Qt::blue);
@@ -210,8 +260,8 @@ void MapWindow::paintEvent(QPaintEvent *event)
                      painter.drawEllipse(aPnt, 6, 6);
 
                  }
-                 else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC())/2
-                         && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() <= ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()) * 3)/4){
+                 else if(paintList.at(i)->getTotalAC() > (paintList.at(i)->getTotalAC())/2
+                         && paintList.at(i)->getTotalAC() <= ((paintList.at(i)->getTotalAC()) * 3)/4){
 
                      painter.setPen(Qt::DashLine);
                      painter.setBrush(Qt::blue);
@@ -219,7 +269,7 @@ void MapWindow::paintEvent(QPaintEvent *event)
                      painter.drawEllipse(aPnt, 8, 8);
 
                  }
-                 else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()) * 3)/4){
+                 else if(paintList.at(i)->getTotalAC() > ((paintList.at(i)->getTotalAC()) * 3)/4){
 
 
                      painter.setPen(Qt::DashLine);
@@ -232,10 +282,9 @@ void MapWindow::paintEvent(QPaintEvent *event)
 
          }
      }
-
-
  }
 
+void MapWindow::logout_clicked(){this->close();}
 
 void MapWindow::keyPressEvent(QKeyEvent *event){
 
@@ -248,6 +297,41 @@ void MapWindow::keyPressEvent(QKeyEvent *event){
     }
 }
 
+void MapWindow::viewHospitals_clicked(){
+    hospitalList = MapWinCtrl::getInstance()->getHospitals();
+    type = 0;
+    update();
+}
+
+void MapWindow::viewNursing_clicked(){
+    nursingList = MapWinCtrl::getInstance()->getNursing();
+    type = 1;
+    update();
+}
+
+void MapWindow::viewAll_clicked(){
+    type = 5;
+    update();
+}
+
+void MapWindow::acBeds_clicked(){
+    availableAC = MapWinCtrl::getInstance()->getACAvailable();
+    type = 2;
+    update();
+}
+
+void MapWindow::cccBeds_clicked(){
+    availableCCC = MapWinCtrl::getInstance()->getCCCAvailable();
+    type = 3;
+    update();
+}
+
+void MapWindow::ltcBeds_clicked(){
+    availableLTC = MapWinCtrl::getInstance()->getLTCAvailable();
+    type = 4;
+    update();
+}
+
 void MapWindow::mousePressEvent(QMouseEvent *event){
 
     QPixmap pm = QPixmap::grabWidget(this);
@@ -256,8 +340,6 @@ void MapWindow::mousePressEvent(QMouseEvent *event){
     test = pm.toImage();
 
     QColor currentColor = test.pixel(event->x(), event->y());
-    //qDebug() << currentColor;
-    //qDebug() << event->pos();
 
     int outerSize = 0;
 
@@ -289,17 +371,11 @@ void MapWindow::mousePressEvent(QMouseEvent *event){
             else if (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC()) * 3)/4)
                 outerSize = 10;
 
-            qDebug() << "Outer size = " << outerSize;
-            qDebug() << "Event x, y = " << event->pos().x() << ", " << event->pos().y();
-            qDebug() << "Facility x, y = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() << ", " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getY();
-
             if(event->pos().x() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() + outerSize)
                && event->pos().x() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() - outerSize)
                 && event->pos().y() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getY() - outerSize)
                 && event->pos().y() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getY() + outerSize)){
 
-
-                qDebug() << "Should be going to the facility window.";
                 MapWinCtrl::getInstance()->gotoFacility();
             }
         }
@@ -316,6 +392,8 @@ void MapWindow::mousePressEvent(QMouseEvent *event){
                     outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()) * 5);
                     if(outerSize > 10)
                         outerSize = 10;
+                    if(outerSize < 4)
+                        outerSize = 4;
                 }
                 else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() < MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
 
@@ -358,8 +436,6 @@ void MapWindow::mousePressEvent(QMouseEvent *event){
 
     }
 
-
-
-    //update();
+    update();
 }
 

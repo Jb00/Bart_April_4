@@ -72,6 +72,8 @@
      <addaction name="actionHospital"/>
      <addaction name="separator"/>
      <addaction name="actionNursing_Home"/>
+     <addaction name="separator"/>
+     <addaction name="actionView_All"/>
     </widget>
     <addaction name="menuFacility"/>
    </widget>
@@ -188,6 +190,11 @@
   <action name="actionGenerate">
    <property name="text">
     <string>Generate</string>
+   </property>
+  </action>
+  <action name="actionView_All">
+   <property name="text">
+    <string>View All</string>
    </property>
   </action>
  </widget>

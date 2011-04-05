@@ -18,7 +18,7 @@
 //TEST REPORT QLIST
 #include <QList>
 #include <QString>
-
+#include "Facility.h"
 
 
 namespace Ui {
@@ -52,15 +52,27 @@ private:
     int area;
     QString permissions;
 
+    QList<Facility*> hospitalList;
+    QList<Facility*> nursingList;
+    QList<Facility*> availableAC;
+    QList<Facility*> availableCCC;
+    QList<Facility*> availableLTC;
+
+    int type;
 
 private slots:
 
     void createUser_clicked();
     void createFac_clicked();
-    //void logout_clicked();
+    void logout_clicked();
     void facilityView();
-    void reportSetup();
     void generateReport_clicked();
+    void viewHospitals_clicked();
+    void viewNursing_clicked();
+    void viewAll_clicked();
+    void acBeds_clicked();
+    void cccBeds_clicked();
+    void ltcBeds_clicked();
 };
 
 #endif // MAPWINDOW_H
