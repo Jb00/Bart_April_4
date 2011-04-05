@@ -13,18 +13,25 @@
 #include "mapwindow.h"
 #include "genctrl.h"
 
-class LoginWindowCtrl:QWidget, public genCTRL
+class LoginWindowCtrl:public QWidget, public genCTRL
 {
 
 public:
-    LoginWindowCtrl(QWidget *parent = 0);
-    ~LoginWindowCtrl();
+    //LoginWindowCtrl();
+    //~LoginWindowCtrl();
+
+    static LoginWindowCtrl* getInstance();
 
     bool authenticate(QString, QString);
     void invalid();
     void goToMap();
 
+    QString getPermissions();
+
 private:
+
+    LoginWindowCtrl(QWidget *parent = 0);
+    static LoginWindowCtrl* anInstance;
 
     User* aUser;
     InvalidWindow* invalidEntry;
@@ -33,6 +40,7 @@ private:
     QString queryName;
     QString queryPword;
     QString fileName;
+    QString permissions;
 };
 
 #endif // LOGINWINDOWCTRL_H

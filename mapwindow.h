@@ -19,6 +19,8 @@
 #include <QList>
 #include <QString>
 
+
+
 namespace Ui {
     class MapWindow;
 }
@@ -28,7 +30,7 @@ class MapWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MapWindow(const QString& filePath);
+    explicit MapWindow(const QString& filePath, QString perm);
     ~MapWindow();
 
     void keyPressEvent(QKeyEvent * event);
@@ -48,6 +50,7 @@ private:
     QList<int> *facSizeList;
     QList<QColor> *colorList;
     int area;
+    QString permissions;
 
 
 private slots:
@@ -55,7 +58,7 @@ private slots:
     void createUser_clicked();
     void createFac_clicked();
     //void logout_clicked();
-    //void facilityView();
+    void facilityView();
     void reportSetup();
     void generateReport_clicked();
 };

@@ -31,7 +31,7 @@ private:
     QString name;
 
     //Class pointers
-    LoginWindowCtrl* loginCtrl;
+    //LoginWindowCtrl* loginCtrl;
     User* aUser;
 
 private slots:

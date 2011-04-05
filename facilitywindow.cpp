@@ -136,7 +136,6 @@ void FacilityWindow::addBedBtn_clicked()
 void FacilityWindow::addPatientBtn_clicked()
 {
     FacilityWinCtrl::getInstance()->goToNewPatient(facility);
-    update();
     /*//ADD PATIENT TO A BED TO A FACILITY
     QDateTime aDate = QDateTime::fromString("2003-05-30T09:00:00","yyyy-MM-dThh:mm:ss");
 

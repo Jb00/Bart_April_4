@@ -2,8 +2,10 @@
 #include "ui_mapwindow.h"
 #include "mapwinctrl.h"
 #include "MessageController.h"
+//#include "loginwindowctrl.h"
 
-MapWindow::MapWindow(const QString &filePath): ui(new Ui::MapWindow)
+
+MapWindow::MapWindow(const QString &filePath, QString perm): ui(new Ui::MapWindow)
 {
     renderer = new QSvgRenderer(filePath);
 
@@ -17,11 +19,23 @@ MapWindow::MapWindow(const QString &filePath): ui(new Ui::MapWindow)
     connect(ui->actionLogout, SIGNAL(triggered()), this, SLOT(close()));
     connect(ui->actionAdd_newUser, SIGNAL(triggered()), this, SLOT(createUser_clicked()));
     connect(ui->actionCreate_Facility, SIGNAL(triggered()), this, SLOT(createFac_clicked()));
-    //connect(ui->actionFacilityView, SIGNAL(triggered()), this, SLOT(facilityView()));
+    connect(ui->actionFacilityView, SIGNAL(triggered()), this, SLOT(facilityView()));
     connect(ui->actionGenerate, SIGNAL(triggered()), this, SLOT(generateReport_clicked()));
 
     colorList = new QList<QColor>();
     facSizeList = new QList<int>();
+
+
+    permissions = perm;
+
+    if(perm == "facility"){
+        ui->menuAdmin->setDisabled(true);
+        ui->menuReport->setDisabled(true);
+    }
+    else if(perm == "lhin"){
+        ui->menuAdmin->setDisabled(true);
+    }
+
 }
 
 MapWindow::~MapWindow(){delete ui;}
@@ -35,7 +49,7 @@ void MapWindow::createFac_clicked(){
 }
 
 void MapWindow::generateReport_clicked(){MapWinCtrl::getInstance()->goToGenerate();}
-//void MapWindow::facilityView(){MapWinCtrl::getInstance()->gotoFacility();}
+void MapWindow::facilityView(){MapWinCtrl::getInstance()->gotoFacility();}
 
 void MapWindow::reportSetup()
 {
@@ -55,8 +69,8 @@ void MapWindow::paintEvent(QPaintEvent *event)
      QPainter painter(this);
      renderer->render(&painter);
 
-     int innerSize;
-     int outerSize;
+     int innerSize = 0;
+     int outerSize = 0;
 
      if(!(MapWinCtrl::getInstance()->listOfFacility.isEmpty())){
 
@@ -84,16 +98,16 @@ void MapWindow::paintEvent(QPaintEvent *event)
                 QColor temp;
                 QColor temp2;
 
-                int outer;
-                int inner;
+                int outer = 0;
+                int inner = 0;
 
                 outer = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAcute() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute()) * 0.1;
                 inner = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeComplex() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex()) * 0.1;
 
-                qDebug() << "getSizeAvailableAcute() = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute();
-                qDebug() << "J.B. Number occupied AC: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAcute();
-                qDebug() << "getSizeAvailableComplex() = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex();
-                qDebug() << "J.B. Number occupied CCC" << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeComplex();
+               // qDebug() << "getSizeAvailableAcute() = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute();
+                //qDebug() << "J.B. Number occupied AC: " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAcute();
+                //qDebug() << "getSizeAvailableComplex() = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex();
+                //qDebug() << "J.B. Number occupied CCC" << MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeComplex();
 
                 temp.setRgb(outer, 255 - outer, 0, 255);
                 temp2.setRgb(inner, 255 - inner, 0, 255);
@@ -127,8 +141,8 @@ void MapWindow::paintEvent(QPaintEvent *event)
                  QColor temp;
                  QColor temp2;
 
-                 int outer;
-                 int inner;
+                 int outer = 0;
+                 int inner = 0;
 
                  inner = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAcute() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableAcute()) * 0.1;
                  outer = (MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeComplex() - MapWinCtrl::getInstance()->listOfFacility.at(i)->getSizeAvailableComplex()) * 0.1;
@@ -242,55 +256,110 @@ void MapWindow::mousePressEvent(QMouseEvent *event){
     test = pm.toImage();
 
     QColor currentColor = test.pixel(event->x(), event->y());
-    qDebug() << currentColor;
+    //qDebug() << currentColor;
+    //qDebug() << event->pos();
 
-    int outerSize;
-    int innerSize;
+    int outerSize = 0;
 
-    for(int i = 0; i < MapWinCtrl::getInstance()->listOfFacility.size(); i++){
+    if(event->button() == Qt::LeftButton){
 
-        if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
+        for(int i = 0; i < MapWinCtrl::getInstance()->listOfFacility.size(); i++){
 
-            outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()) * 5);
-            if(outerSize > 10)
+            if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
+
+                outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()) * 5);
+                if(outerSize > 10)
+                    outerSize = 10;
+            }
+            else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() < MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
+
+                outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()) * 5);
+                if(outerSize > 10)
+                    outerSize = 10;
+            }
+            else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > 0
+                    && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4)
+                outerSize = 4;
+            else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4
+                    && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2)
+                outerSize = 6;
+            else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2
+                    && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC()) * 3)/4)
+                outerSize = 8;
+            else if (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC()) * 3)/4)
                 outerSize = 10;
+
+            qDebug() << "Outer size = " << outerSize;
+            qDebug() << "Event x, y = " << event->pos().x() << ", " << event->pos().y();
+            qDebug() << "Facility x, y = " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() << ", " << MapWinCtrl::getInstance()->listOfFacility.at(i)->getY();
+
+            if(event->pos().x() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() + outerSize)
+               && event->pos().x() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() - outerSize)
+                && event->pos().y() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getY() - outerSize)
+                && event->pos().y() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getY() + outerSize)){
+
+
+                qDebug() << "Should be going to the facility window.";
+                MapWinCtrl::getInstance()->gotoFacility();
+            }
         }
-        else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() < MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
 
-            outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()) * 5);
-            if(outerSize > 10)
-                outerSize = 10;
+    }
+    else{
+
+        if(permissions == "admin"){
+
+            for(int i = 0; i < MapWinCtrl::getInstance()->listOfFacility.size(); i++){
+
+                if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() > MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
+
+                    outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()) * 5);
+                    if(outerSize > 10)
+                        outerSize = 10;
+                }
+                else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC() < MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()){
+
+                    outerSize = ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalCCC()/MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalAC()) * 5);
+                    if(outerSize > 10)
+                        outerSize = 10;
+                }
+                else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > 0
+                        && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4)
+                    outerSize = 4;
+                else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4
+                        && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2)
+                    outerSize = 6;
+                else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2
+                        && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC()) * 3)/4)
+                    outerSize = 8;
+                else
+                    outerSize = 10;
+
+                if(event->pos().x() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() + outerSize)
+                   && event->pos().x() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() - outerSize)
+                    && event->pos().y() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getY() - outerSize)
+                    && event->pos().y() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getY() + outerSize)){
+
+                    MapWinCtrl::getInstance()->invalid();
+
+                    return;
+                }
+
+            }
+
+            if(currentColor == QColor("#f2f1f0"))
+                MapWinCtrl::getInstance()->invalid();
+            else
+                MapWinCtrl::getInstance()->goToAddFac(event->pos(), area, currentColor);
         }
-        else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > 0
-                && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4)
-            outerSize = 4;
-        else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/4
-                && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2)
-            outerSize = 6;
-        else if(MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() > (MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC())/2
-                && MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC() <= ((MapWinCtrl::getInstance()->listOfFacility.at(i)->getTotalLTC()) * 3)/4)
-            outerSize = 8;
-        else
-            outerSize = 10;
-
-        if(event->pos().x() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() + outerSize)
-           && event->pos().x() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() - outerSize)
-            && event->pos().y() >= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getY() - outerSize)
-            && event->pos().y() <= (MapWinCtrl::getInstance()->listOfFacility.at(i)->getX() + outerSize)){
-
+        else{
             MapWinCtrl::getInstance()->invalid();
-
-            return;
         }
 
     }
 
-    if(currentColor == QColor("#f2f1f0"))
-        MapWinCtrl::getInstance()->invalid();
-    else
-        MapWinCtrl::getInstance()->goToAddFac(event->pos(), area, currentColor);
 
 
-    update();
+    //update();
 }
 

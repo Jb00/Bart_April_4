@@ -19,8 +19,6 @@ LoginWindow::LoginWindow(QWidget *parent) :
     connect(ui->cancelBtn, SIGNAL(pressed()), this, SLOT(on_cancelBtn_clicked()));
     connect(ui->loginBtn, SIGNAL(pressed()), this, SLOT(on_loginBtn_clicked()));
 
-    loginCtrl = new LoginWindowCtrl();
-
     setScheme();
 }
 
@@ -34,14 +32,14 @@ void LoginWindow::on_loginBtn_clicked()
     name = ui->nameLine->text();
     pword = ui->pwordLine->text();
 
-    if(loginCtrl->authenticate(pword, name)){
+    if(LoginWindowCtrl::getInstance()->authenticate(pword, name)){
 
-        loginCtrl->goToMap();
+        LoginWindowCtrl::getInstance()->goToMap();
         this->close();
     }
     else{
 
-        loginCtrl->invalid();
+        LoginWindowCtrl::getInstance()->invalid();
         ui->pwordLine->clear();
         ui->nameLine->clear();
     }

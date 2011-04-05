@@ -39,6 +39,7 @@ public:
     void setupFacility();
     void gotoFacility();
     void goToGenerate();
+
     void setupUser();
     int getId();
     static MapWinCtrl* getInstance();

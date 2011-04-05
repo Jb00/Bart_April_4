@@ -122,7 +122,7 @@ void MapWinCtrl::setupPatients()
 
          Patient * aPatient = new Patient(HealthCardNum, firstName,lastName,dateAdmitted,datePlacedOnWaitingList,reqCare,occCare);
 
-         qDebug() << "Patient health cards in setupPatients(): " << aPatient->gethealthCard();
+         //qDebug() << "Patient health cards in setupPatients(): " << aPatient->gethealthCard();
          if(occCare == 0){
              for(int i = 0; i < listOfFacility.size(); i++)
                  if (listOfFacility.at(i)->NUsedBedAcute())
