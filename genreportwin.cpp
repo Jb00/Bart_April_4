@@ -33,6 +33,7 @@ void GenReportWin::setUpList(){
 
     for(int i = 0; i < MapWinCtrl::getInstance()->listOfFacility.size(); i++){
         QListWidgetItem *newItem = new QListWidgetItem;
+
         newItem->setText(MapWinCtrl::getInstance()->listOfFacility.at(i)->getName());
         ui->facListWidget->addItem(newItem);
         ui->facListWidget->setAutoScroll(true);

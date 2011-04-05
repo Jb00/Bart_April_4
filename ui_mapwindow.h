@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mapwindow.ui'
 **
-** Created: Sun Apr 3 22:20:27 2011
+** Created: Mon Apr 4 19:05:26 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -145,8 +145,6 @@ public:
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionFacilityView);
         menuAdmin->addAction(actionAdd_newUser);
-        menuAdmin->addSeparator();
-        menuAdmin->addAction(actionCreate_Facility);
         menuReport->addAction(actionGenerate);
 
         retranslateUi(MapWindow);

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'genreportwin.ui'
 **
-** Created: Sun Apr 3 23:09:16 2011
+** Created: Mon Apr 4 19:05:26 2011
 **      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

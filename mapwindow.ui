@@ -87,8 +87,6 @@
      <string>Admin</string>
     </property>
     <addaction name="actionAdd_newUser"/>
-    <addaction name="separator"/>
-    <addaction name="actionCreate_Facility"/>
    </widget>
    <widget class="QMenu" name="menuReport">
     <property name="title">

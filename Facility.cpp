@@ -7,7 +7,7 @@ Facility::Facility(int anId,QString aName, int aX,int aY,int anACbed,int aCCCbed
     x=aX;
     y=aY;
     NumberBedTotalAcute  = NumberBedAvailableAcute = anACbed;
-    NumberBedTotalComplex  = NumberBedAvailableComplex=aCCCbed;
+    NumberBedTotalComplex  = NumberBedAvailableComplex = aCCCbed;
     NumberBedTotalLTC = NumberBedAvailableLTC = aLTCBed;
 
     if(NumberBedTotalAcute > 0 )
